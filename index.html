@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>口コミ投稿ありがとうキャンペーン | わんグル</title>
+  <meta name="description" content="わんグルに掲載されているお店の口コミを投稿して、愛犬のオリジナルLINEスタンプ風デザインを無料でゲット！">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --main:    #F6A96D;
+      --sub1:    #FFF3E6;
+      --sub2:    #F9DCC4;
+      --brown:   #8B5E3C;
+      --white:   #FFFFFF;
+      --red:     #FF7A59;
+      --green:   #6BCB77;
+      --text:    #3A2A1A;
+      --textmid: #6B5A4A;
+    }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'BIZ UDPGothic', Meiryo, sans-serif;
+      color: var(--text);
+      background: var(--sub1);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ─── HEADER ─────────────────────────────── */
+    .header {
+      background: var(--white);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(139,94,60,.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-logo {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--brown);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ─── BUTTONS ─────────────────────────────── */
+    .btn {
+      display: inline-block;
+      padding: 16px 32px;
+      border-radius: 9999px;
+      font-weight: 800;
+      font-size: 1rem;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      line-height: 1.4;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn:hover  { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary   { background: var(--red);   color: var(--white); box-shadow: 0 4px 16px rgba(255,122,89,.4); }
+    .btn-secondary { background: var(--white); color: var(--brown); border: 2px solid var(--main); }
+    .btn-lg   { padding: 18px 40px; font-size: 1.1rem; }
+    .btn-full { display: block; width: 100%; }
+
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 4px 16px rgba(255,122,89,.4); }
+      50%      { box-shadow: 0 4px 32px rgba(255,122,89,.7); }
+    }
+    .btn-pulse { animation: pulse 2s ease-in-out infinite; }
+
+    /* ─── SECTIONS ────────────────────────────── */
+    section { padding: 64px 0; }
+    .container { max-width: 600px; margin: 0 auto; padding: 0 20px; }
+
+    .sec-title {
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--brown);
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 32px;
+    }
+    .sec-title-deco {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .sec-title-deco::before,
+    .sec-title-deco::after {
+      content: '';
+      display: block;
+      height: 2px;
+      width: 36px;
+      background: var(--main);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ─── FADE-IN ─────────────────────────────── */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s, transform .6s; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─────────────────────────────────────────── */
+    /* HERO                                        */
+    /* ─────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(160deg, var(--sub1) 0%, var(--sub2) 60%, #F2C99A 100%);
+      padding: 48px 0 64px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before,
+    .hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: var(--main);
+    }
+    .hero::before { top: -50px; right: -50px; width: 220px; height: 220px; opacity: .1; }
+    .hero::after  { bottom: -70px; left: -70px; width: 280px; height: 280px; opacity: .08; }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--green);
+      color: var(--white);
+      font-weight: 800;
+      font-size: .8rem;
+      padding: 5px 16px;
+      border-radius: 9999px;
+      margin-bottom: 14px;
+    }
+    .hero-title {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: var(--brown);
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+    .hero-title .hl {
+      background: linear-gradient(90deg, var(--red), #FF9A59);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-title .free {
+      display: inline-block;
+      background: var(--red);
+      color: var(--white) !important;
+      -webkit-text-fill-color: var(--white);
+      font-size: 1.1rem;
+      padding: 2px 12px;
+      border-radius: 8px;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+    .hero-sub {
+      color: var(--textmid);
+      font-size: .95rem;
+      line-height: 1.9;
+      margin-bottom: 32px;
+    }
+
+    /* Phone mockup */
+    .hero-visual { display: flex; justify-content: center; margin-bottom: 36px; }
+    .phone-wrap  { position: relative; }
+
+    @keyframes pawFloat {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-8px) rotate(6deg); }
+    }
+    .paw-deco {
+      position: absolute;
+      opacity: .2;
+      animation: pawFloat 3s ease-in-out infinite;
+    }
+
+    .phone-frame {
+      width: 210px;
+      height: 455px; /* 9:19.5 比率 */
+      background: #1C1C1E;
+      border-radius: 36px;
+      padding: 10px;
+      box-shadow: 0 24px 60px rgba(28,28,30,.35), inset 0 0 0 1px rgba(255,255,255,.08);
+      position: relative;
+    }
+    .phone-notch {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 56px;
+      height: 7px;
+      background: #333;
+      border-radius: 4px;
+      z-index: 2;
+    }
+    .phone-screen {
+      background: #B2DFDB;
+      border-radius: 28px;
+      overflow: hidden;
+      padding: 24px 8px 8px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes floatUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .stamp-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      min-height: 0;
+    }
+    /* 5枚目は2列全幅 */
+    .stamp-grid .stamp-card:nth-child(5) {
+      grid-column: 1 / -1;
+    }
+    .stamp-card {
+      background: var(--white);
+      border-radius: 8px;
+      padding: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,.1);
+      animation: floatUp .5s ease both;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .stamp-card:nth-child(1) { animation-delay: .1s; }
+    .stamp-card:nth-child(2) { animation-delay: .2s; }
+    .stamp-card:nth-child(3) { animation-delay: .3s; }
+    .stamp-card:nth-child(4) { animation-delay: .4s; }
+    .stamp-card:nth-child(5) { animation-delay: .5s; }
+    .stamp-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .hero-btns { display: flex; flex-direction: column; gap: 12px; }
+
+    /* ─────────────────────────────────────────── */
+    /* EXPLANATION                                 */
+    /* ─────────────────────────────────────────── */
+    .explanation { background: var(--white); }
+    .exp-body { color: var(--textmid); font-size: .95rem; line-height: 2; }
+    .exp-note {
+      margin-top: 18px;
+      padding: 12px 16px;
+      background: var(--sub1);
+      border-left: 4px solid var(--main);
+      border-radius: 0 12px 12px 0;
+      font-size: .82rem;
+      color: var(--textmid);
+    }
+
+    /* ─────────────────────────────────────────── */
+    /* RECOMMEND                                   */
+    /* ─────────────────────────────────────────── */
+    .recommend { background: var(--sub2); }
+    .recommend-grid { display: flex; flex-direction: column; gap: 12px; }
+    .rec-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 2px 10px rgba(139,94,60,.06);
+    }
+    .rec-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--sub1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .rec-text { font-weight: 700; font-size: .95rem; }
+
+    /* ─────────────────────────────────────────── */
+    /* GIFT                                        */
+    /* ─────────────────────────────────────────── */
+    .gift { background: var(--white); }
+    .gift-intro { color: var(--textmid); font-size: .95rem; margin-bottom: 20px; }
+    .gift-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .gift-list li { display: flex; align-items: flex-start; gap: 10px; font-size: .95rem; }
+    .gift-list li::before { content: '🐾'; flex-shrink: 0; margin-top: 2px; }
+    .gift-note {
+      padding: 16px;
+      background: var(--sub1);
+      border-radius: 14px;
+      font-size: .84rem;
+      color: var(--textmid);
+      line-height: 1.8;
+    }
+
+    /* ─────────────────────────────────────────── */
+    /* STEPS                                       */
+    /* ─────────────────────────────────────────── */
+    .steps { background: var(--sub1); }
+    .steps-list { display: flex; flex-direction: column; margin-bottom: 36px; }
+    .step-item { display: flex; gap: 16px; position: relative; }
+    .step-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 23px;
+      top: 50px;
+      bottom: -10px;
+      width: 2px;
+      background: var(--sub2);
+      border-radius: 2px;
+    }
+    .step-left { flex-shrink: 0; padding-bottom: 20px; }
+    .step-num {
+      width: 48px;
+      height: 48px;
+      background: var(--main);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      line-height: 1;
+      box-shadow: 0 4px 12px rgba(246,169,109,.4);
+    }
+    .step-num .sn-label { font-size: .5rem; letter-spacing: .05em; opacity: .85; }
+    .step-num .sn-num   { font-size: 1.1rem; }
+    .step-right { flex: 1; padding-bottom: 28px; }
+    .step-tag   { font-size: .7rem; font-weight: 800; color: var(--main); letter-spacing: .08em; margin-bottom: 2px; }
+    .step-title { font-weight: 900; font-size: 1rem; line-height: 1.4; }
+    .step-desc  { font-size: .84rem; color: var(--textmid); margin-top: 4px; line-height: 1.7; }
+
+    /* ─────────────────────────────────────────── */
+    /* REVIEW GUIDE                                */
+    /* ─────────────────────────────────────────── */
+    .review-guide { background: var(--white); }
+    .review-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+      list-style: none;
+    }
+    .review-grid li {
+      background: var(--sub1);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: .88rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .review-grid li::before { content: '✓'; color: var(--green); font-weight: 900; flex-shrink: 0; }
+    .review-note {
+      background: var(--sub2);
+      border-radius: 14px;
+      padding: 16px 20px;
+      font-size: .88rem;
+      color: var(--textmid);
+      line-height: 1.8;
+    }
+
+    /* ─────────────────────────────────────────── */
+    /* SAMPLES                                     */
+    /* ─────────────────────────────────────────── */
+    .samples { background: var(--sub2); }
+    .samples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .sample-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 0;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(139,94,60,.08);
+      transition: transform .2s;
+    }
+    .sample-card:hover { transform: translateY(-4px); }
+    .sample-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .sample-label {
+      display: inline-block;
+      background: var(--sub1);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-weight: 800;
+      font-size: .84rem;
+      color: var(--brown);
+    }
+    .samples-caption { text-align: center; color: var(--textmid); font-size: .8rem; margin-top: 14px; }
+
+    /* ─────────────────────────────────────────── */
+    /* FAQ                                         */
+    /* ─────────────────────────────────────────── */
+    .faq { background: var(--white); }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    details {
+      background: var(--sub1);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: background .2s;
+    }
+    details[open] { background: var(--white); outline: 2px solid var(--sub2); }
+    summary {
+      padding: 16px 20px;
+      font-weight: 800;
+      font-size: .93rem;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: '+';
+      font-size: 1.2rem;
+      color: var(--main);
+      flex-shrink: 0;
+      line-height: 1;
+      transition: transform .2s;
+    }
+    details[open] summary::after { transform: rotate(45deg); }
+    .faq-q { display: flex; gap: 8px; }
+    .faq-q::before { content: 'Q.'; color: var(--main); font-weight: 900; flex-shrink: 0; }
+    .faq-a {
+      padding: 0 20px 16px 44px;
+      font-size: .89rem;
+      color: var(--textmid);
+      line-height: 1.8;
+    }
+
+    /* ─────────────────────────────────────────── */
+    /* NOTES                                       */
+    /* ─────────────────────────────────────────── */
+    .notes { background: var(--sub1); padding: 40px 0; }
+    .notes-heading { font-size: .88rem; font-weight: 800; color: var(--textmid); margin-bottom: 14px; }
+    .notes-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .notes-list li {
+      font-size: .8rem;
+      color: var(--textmid);
+      padding-left: 14px;
+      position: relative;
+      line-height: 1.7;
+    }
+    .notes-list li::before { content: '・'; position: absolute; left: 0; }
+
+    /* ─────────────────────────────────────────── */
+    /* FINAL CTA                                   */
+    /* ─────────────────────────────────────────── */
+    .final-cta {
+      background: linear-gradient(135deg, #FFBA80 0%, var(--main) 50%, #FF9A6C 100%);
+      padding: 64px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* 背景に薄い円形デコレーション */
+    .final-cta::before,
+    .final-cta::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      pointer-events: none;
+    }
+    .final-cta::before { width: 260px; height: 260px; top: -80px; right: -60px; }
+    .final-cta::after  { width: 200px; height: 200px; bottom: -60px; left: -50px; }
+    .final-cta .sec-title { color: var(--brown); }
+    .final-cta .sec-title .hl { color: var(--white); text-shadow: 0 1px 4px rgba(139,94,60,.25); }
+    .final-cta-body {
+      color: var(--brown);
+      font-size: .95rem;
+      line-height: 2;
+      margin-bottom: 36px;
+    }
+    /* オレンジ背景ではブラウンボタンで視認性を確保 */
+    .final-cta .btn-primary {
+      background: var(--brown);
+      color: var(--white);
+      box-shadow: 0 4px 16px rgba(139,94,60,.4);
+    }
+    .final-cta .btn-secondary {
+      border-color: var(--brown);
+      color: var(--brown);
+      background: rgba(255,255,255,.65);
+    }
+
+    /* ─────────────────────────────────────────── */
+    /* FOOTER                                      */
+    /* ─────────────────────────────────────────── */
+    .footer {
+      background: #1C1C1E;
+      color: rgba(255,255,255,.4);
+      text-align: center;
+      padding: 24px;
+      font-size: .78rem;
+    }
+    .footer a { color: rgba(255,255,255,.55); text-decoration: none; }
+
+    /* ─── UTILITY ─────────────────────────────── */
+    .tc  { text-align: center; }
+    .mb8  { margin-bottom:  8px; }
+    .mb16 { margin-bottom: 16px; }
+    .mb24 { margin-bottom: 24px; }
+    .mb32 { margin-bottom: 32px; }
+    .mt16 { margin-top: 16px; }
+    .mt24 { margin-top: 24px; }
+
+    /* mid CTA strip */
+    .cta-strip { background: var(--sub1); padding: 36px 20px; text-align: center; }
+    .cta-strip .btn { max-width: 420px; margin: 0 auto; display: block; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- HEADER                                     -->
+<!-- ══════════════════════════════════════════ -->
+<header class="header">
+  <a href="https://dognavi.com/" class="header-logo">
+    🐾 わんグル
+  </a>
+</header>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- HERO                                       -->
+<!-- ══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="container" style="position:relative;z-index:1;">
+
+    <div class="tc mb24">
+      <span class="hero-badge">🎁 口コミ投稿ありがとうキャンペーン</span>
+
+      <h1 class="hero-title" style="margin-top:12px;">
+        口コミ投稿で<br>
+        愛犬の<span class="hl">オリジナル<br>LINEスタンプ風デザイン</span>を<br>
+        <span class="hl" style="font-size:2rem;">無料</span><span class="free">プレゼント！</span>
+      </h1>
+
+      <p class="hero-sub">
+        わんグルに掲載されているお店の口コミを書くだけ。<br>
+        あなたの愛犬の写真をもとに、<br>
+        世界にひとつだけのかわいいスタンプ風デザインを作成します。
+      </p>
+    </div>
+
+    <!-- ── Phone mockup ── -->
+    <div class="hero-visual">
+      <div class="phone-wrap">
+        <!-- floating paw decorations -->
+        <svg class="paw-deco" style="top:8px;right:-32px;width:40px;" viewBox="0 0 100 100" fill="#F6A96D" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="70" rx="20" ry="15"/><circle cx="25" cy="48" r="10"/><circle cx="75" cy="48" r="10"/><circle cx="37" cy="32" r="8"/><circle cx="63" cy="32" r="8"/>
+        </svg>
+        <svg class="paw-deco" style="bottom:24px;left:-28px;width:28px;animation-delay:.9s;" viewBox="0 0 100 100" fill="#F6A96D" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="70" rx="20" ry="15"/><circle cx="25" cy="48" r="10"/><circle cx="75" cy="48" r="10"/><circle cx="37" cy="32" r="8"/><circle cx="63" cy="32" r="8"/>
+        </svg>
+        <svg class="paw-deco" style="top:42%;right:-18px;width:22px;animation-delay:.45s;" viewBox="0 0 100 100" fill="#F6A96D" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="70" rx="20" ry="15"/><circle cx="25" cy="48" r="10"/><circle cx="75" cy="48" r="10"/><circle cx="37" cy="32" r="8"/><circle cx="63" cy="32" r="8"/>
+        </svg>
+
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+
+            <div class="stamp-grid">
+              <div class="stamp-card"><img src="stamp1.png" class="stamp-img" alt="スタンプデザイン1"></div>
+              <div class="stamp-card"><img src="stamp2.png" class="stamp-img" alt="スタンプデザイン2"></div>
+              <div class="stamp-card"><img src="stamp3.png" class="stamp-img" alt="スタンプデザイン3"></div>
+              <div class="stamp-card"><img src="stamp4.png" class="stamp-img" alt="スタンプデザイン4"></div>
+              <div class="stamp-card"><img src="stamp5.png" class="stamp-img" alt="スタンプデザイン5"></div>
+            </div>
+
+          </div><!-- /phone-screen -->
+        </div><!-- /phone-frame -->
+      </div><!-- /phone-wrap -->
+    </div><!-- /hero-visual -->
+
+    <!-- CTA -->
+    <div class="hero-btns">
+      <a href="https://dognavi.com/stamp-campaign/" class="btn btn-primary btn-lg btn-pulse">
+        🎁 口コミを書いてプレゼントを受け取る
+      </a>
+      <a href="#steps" class="btn btn-secondary btn-lg">
+        キャンペーンの流れを見る ↓
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- EXPLANATION                                -->
+<!-- ══════════════════════════════════════════ -->
+<section class="explanation fade-in">
+  <div class="container">
+    <h2 class="sec-title">
+      <span class="sec-title-deco">
+        わんグルの口コミ投稿で、<br>愛犬がかわいいスタンプ風デザインに！
+      </span>
+    </h2>
+    <p class="exp-body">
+      わんグルでは、愛犬と一緒に行けるお店のリアルな口コミを募集しています。実際に行った人の声が増えることで、これからおでかけする飼い主さんにとって、とても役立つ情報になります。<br><br>
+      そこで今回、口コミを書いてくれた方に感謝を込めて、愛犬の写真をもとにしたオリジナルLINEスタンプ風デザインを無料でプレゼントします。
+    </p>
+    <div class="exp-note">
+      ※実際にLINE STOREで販売・登録するものではなく、画像デザインのプレゼントです。必要に応じてご自身でLINEスタンプ申請などにご利用ください。
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- RECOMMEND                                  -->
+<!-- ══════════════════════════════════════════ -->
+<section class="recommend fade-in">
+  <div class="container">
+    <h2 class="sec-title">こんな方におすすめ</h2>
+    <div class="recommend-grid">
+      <div class="rec-card"><div class="rec-icon">🐕</div><span class="rec-text">愛犬とのおでかけ記録を残したい方</span></div>
+      <div class="rec-card"><div class="rec-icon">🏪</div><span class="rec-text">犬同伴OKのお店を応援したい方</span></div>
+      <div class="rec-card"><div class="rec-icon">📝</div><span class="rec-text">他の飼い主さんの参考になる口コミを書きたい方</span></div>
+      <div class="rec-card"><div class="rec-icon">🎨</div><span class="rec-text">うちの子だけのかわいいデザインが欲しい方</span></div>
+      <div class="rec-card"><div class="rec-icon">📱</div><span class="rec-text">LINEやSNSで使える愛犬画像が欲しい方</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- GIFT                                       -->
+<!-- ══════════════════════════════════════════ -->
+<section class="gift fade-in">
+  <div class="container">
+    <h2 class="sec-title">🎁 プレゼント内容</h2>
+    <p class="gift-intro">
+      口コミを投稿してくれた方に、愛犬の写真をもとにしたスタンプ風デザインを無料で作成します。
+    </p>
+    <ul class="gift-list">
+      <li>愛犬の写真を使ったスタンプ風デザイン</li>
+      <li>かわいい文字入れ</li>
+      <li>背景透過風・ステッカー風のデザイン</li>
+      <li>SNSやLINEで使いやすい画像サイズ</li>
+      <li>「ありがとう」「OK」「行きたいワン」など日常で使いやすい言葉入り</li>
+    </ul>
+    <div class="gift-note">
+      📌 実際のLINEスタンプとして販売・登録するには、LINE Creators Marketでの申請が必要です。本キャンペーンでは、スタンプ風画像デザインの作成・プレゼントを行います。
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- STEPS                                      -->
+<!-- ══════════════════════════════════════════ -->
+<section class="steps fade-in" id="steps">
+  <div class="container">
+    <h2 class="sec-title">参加方法</h2>
+    <div class="steps-list">
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num"><span class="sn-label">STEP</span><span class="sn-num">1</span></div>
+        </div>
+        <div class="step-right">
+          <div class="step-tag">STEP 1</div>
+          <div class="step-title">わんグルで、実際に行ったお店を探す</div>
+          <div class="step-desc">dognavi.com から愛犬と訪れたお店を検索しましょう。</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num"><span class="sn-label">STEP</span><span class="sn-num">2</span></div>
+        </div>
+        <div class="step-right">
+          <div class="step-tag">STEP 2</div>
+          <div class="step-title">お店ページから口コミを投稿する</div>
+          <div class="step-desc">実際の体験をもとに、リアルな口コミを書いてください。</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num"><span class="sn-label">STEP</span><span class="sn-num">3</span></div>
+        </div>
+        <div class="step-right">
+          <div class="step-tag">STEP 3</div>
+          <div class="step-title">キャンペーン応募フォームから必要情報を送信</div>
+          <div class="step-desc">口コミ投稿後、専用の応募フォームからご応募ください。</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num"><span class="sn-label">STEP</span><span class="sn-num">4</span></div>
+        </div>
+        <div class="step-right">
+          <div class="step-tag">STEP 4</div>
+          <div class="step-title">愛犬の写真を送る</div>
+          <div class="step-desc">顔や全身がわかる写真を数枚送っていただくと、よりかわいく作成できます。</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num" style="background:var(--green);box-shadow:0 4px 12px rgba(107,203,119,.4);">
+            <span class="sn-label">STEP</span><span class="sn-num">5</span>
+          </div>
+        </div>
+        <div class="step-right">
+          <div class="step-tag" style="color:var(--green);">STEP 5</div>
+          <div class="step-title">完成したスタンプ風デザインを受け取る 🎉</div>
+          <div class="step-desc">オリジナルデザインをお届けします！LINEやSNSでご活用ください。</div>
+        </div>
+      </div>
+
+    </div>
+    <a href="https://dognavi.com/stamp-campaign/" class="btn btn-primary btn-lg btn-full btn-pulse tc">
+      🐾 口コミを書いて応募する
+    </a>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- REVIEW GUIDE                               -->
+<!-- ══════════════════════════════════════════ -->
+<section class="review-guide fade-in">
+  <div class="container">
+    <h2 class="sec-title">口コミには、<br>こんな内容を書いてもらえると嬉しいです</h2>
+    <ul class="review-grid">
+      <li>愛犬と一緒に入りやすかったか</li>
+      <li>店内・テラス席の雰囲気</li>
+      <li>スタッフさんの対応</li>
+      <li>犬用メニューやお水の提供</li>
+      <li>他のワンちゃん連れへの配慮</li>
+      <li>料理やドリンクの感想</li>
+      <li style="grid-column:1/-1;">また行きたいと思ったポイント</li>
+    </ul>
+    <div class="review-note">
+      💬 短い感想でも大丈夫です。あなたのリアルな体験が、他の飼い主さんにとって大切な情報になります。
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SAMPLES                                    -->
+<!-- ══════════════════════════════════════════ -->
+<section class="samples fade-in">
+  <div class="container">
+    <h2 class="sec-title">こんなスタンプ風デザインを<br>プレゼント！</h2>
+    <div class="samples-grid">
+
+      <!-- Sample 1 -->
+      <div class="sample-card">
+        <img src="sample1.png" class="sample-img" alt="サンプルデザイン1">
+      </div>
+
+      <!-- Sample 2 -->
+      <div class="sample-card">
+        <img src="sample2.png" class="sample-img" alt="サンプルデザイン2">
+      </div>
+
+      <!-- Sample 3 -->
+      <div class="sample-card">
+        <img src="sample3.png" class="sample-img" alt="サンプルデザイン3">
+      </div>
+
+      <!-- Sample 4 -->
+      <div class="sample-card">
+        <img src="sample4.png" class="sample-img" alt="サンプルデザイン4">
+      </div>
+
+    </div>
+    <p class="samples-caption">※デザインはサンプルです。実際は愛犬のお写真をもとに作成します。</p>
+  </div>
+</section>
+
+
+<!-- mid CTA -->
+<div class="cta-strip">
+  <a href="https://dognavi.com/stamp-campaign/" class="btn btn-primary btn-lg btn-pulse">
+    🐾 キャンペーンに参加する
+  </a>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- FAQ                                        -->
+<!-- ══════════════════════════════════════════ -->
+<section class="faq fade-in">
+  <div class="container">
+    <h2 class="sec-title">よくある質問</h2>
+    <div class="faq-list">
+
+      <details>
+        <summary><span class="faq-q">口コミを書けば誰でももらえますか？</span></summary>
+        <p class="faq-a">わんグルに掲載されているお店へ、実際の体験に基づいた口コミを投稿していただいた方が対象です。</p>
+      </details>
+
+      <details>
+        <summary><span class="faq-q">LINEでそのままスタンプとして使えますか？</span></summary>
+        <p class="faq-a">本キャンペーンでお渡しするのは、LINEスタンプ風の画像デザインです。LINEスタンプとして販売・登録する場合は、別途LINE Creators Marketでの申請が必要です。</p>
+      </details>
+
+      <details>
+        <summary><span class="faq-q">写真は何枚必要ですか？</span></summary>
+        <p class="faq-a">愛犬の顔や全身がわかる写真を数枚送っていただくと、よりかわいく作成しやすくなります。</p>
+      </details>
+
+      <details>
+        <summary><span class="faq-q">どんな写真が向いていますか？</span></summary>
+        <p class="faq-a">明るい場所で撮影された、顔がはっきり写っている写真がおすすめです。</p>
+      </details>
+
+      <details>
+        <summary><span class="faq-q">完成までどのくらいかかりますか？</span></summary>
+        <p class="faq-a">応募状況によって変わりますが、順次作成してお渡しします。</p>
+      </details>
+
+      <details>
+        <summary><span class="faq-q">複数の犬でも申し込めますか？</span></summary>
+        <p class="faq-a">可能ですが、キャンペーン内容によって対応範囲が変わる場合があります。応募フォームでご確認ください。</p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- NOTES                                      -->
+<!-- ══════════════════════════════════════════ -->
+<section class="notes fade-in">
+  <div class="container">
+    <p class="notes-heading">📋 注意事項</p>
+    <ul class="notes-list">
+      <li>本キャンペーンは、わんグルに掲載されているお店への口コミ投稿者を対象としています。</li>
+      <li>投稿内容が実体験に基づかない場合、特典の対象外となる場合があります。</li>
+      <li>プレゼント内容は、LINEスタンプ風の画像デザインです。</li>
+      <li>LINEアプリ内で正式なスタンプとして利用・販売するには、LINE Creators Marketでの申請が必要です。</li>
+      <li>送付いただいた写真は、デザイン作成の目的でのみ使用します。</li>
+      <li>キャンペーン内容は予告なく変更・終了する場合があります。</li>
+      <li>店舗や第三者への誹謗中傷、不適切な内容を含む口コミは対象外です。</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- FINAL CTA                                  -->
+<!-- ══════════════════════════════════════════ -->
+<section class="final-cta fade-in">
+  <div class="container">
+    <h2 class="sec-title">
+      愛犬とのおでかけ体験を、<br>
+      <span class="hl">次の飼い主さんのヒントに。</span>
+    </h2>
+    <p class="final-cta-body">
+      あなたの口コミが、これから愛犬とおでかけする誰かの安心につながります。<br>
+      わんグルに口コミを投稿して、うちの子だけのかわいいスタンプ風デザインを受け取りませんか？
+    </p>
+    <a href="https://dognavi.com/stamp-campaign/" class="btn btn-primary btn-lg btn-full btn-pulse tc" style="max-width:420px;margin:0 auto 16px;display:block;font-size:1.1rem;">
+      🎁 今すぐ口コミを書いて応募する
+    </a>
+    <div class="tc">
+      <a href="https://dognavi.com/review/" class="btn btn-secondary" style="border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.88);background:transparent;">
+        わんグルで口コミを書く →
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- FOOTER                                     -->
+<!-- ══════════════════════════════════════════ -->
+<footer class="footer">
+  <p>© 2024 わんグル（<a href="https://dognavi.com/">dognavi.com</a>）All rights reserved.</p>
+</footer>
+
+
+<script>
+  // スクロール時フェードイン
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // スムーズスクロール
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+
+</body>
+</html>
