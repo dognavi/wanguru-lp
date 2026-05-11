@@ -169,87 +169,28 @@
       margin-bottom: 32px;
     }
 
-    /* Phone mockup */
-    .hero-visual { display: flex; justify-content: center; margin-bottom: 36px; }
-    .phone-wrap  { position: relative; }
-
-    @keyframes pawFloat {
-      0%,100% { transform: translateY(0) rotate(0deg); }
-      50%      { transform: translateY(-8px) rotate(6deg); }
-    }
-    .paw-deco {
-      position: absolute;
-      opacity: .2;
-      animation: pawFloat 3s ease-in-out infinite;
-    }
-
-    .phone-frame {
-      width: 210px;
-      height: 455px; /* 9:19.5 比率 */
-      background: #1C1C1E;
-      border-radius: 36px;
-      padding: 10px;
-      box-shadow: 0 24px 60px rgba(28,28,30,.35), inset 0 0 0 1px rgba(255,255,255,.08);
-      position: relative;
-    }
-    .phone-notch {
-      position: absolute;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 56px;
-      height: 7px;
-      background: #333;
-      border-radius: 4px;
-      z-index: 2;
-    }
-    .phone-screen {
-      background: #B2DFDB;
-      border-radius: 28px;
-      overflow: hidden;
-      padding: 24px 8px 8px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    @keyframes floatUp {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .stamp-grid {
-      flex: 1;
+    /* ヒーロー スタンプ3枚横並び */
+    .hero-stamps {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5px;
-      min-height: 0;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 36px;
     }
-    /* 5枚目は2列全幅 */
-    .stamp-grid .stamp-card:nth-child(5) {
-      grid-column: 1 / -1;
-    }
-    .stamp-card {
-      background: var(--white);
-      border-radius: 8px;
-      padding: 4px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,.1);
-      animation: floatUp .5s ease both;
-      overflow: hidden;
-      min-height: 0;
-    }
-    .stamp-card:nth-child(1) { animation-delay: .1s; }
-    .stamp-card:nth-child(2) { animation-delay: .2s; }
-    .stamp-card:nth-child(3) { animation-delay: .3s; }
-    .stamp-card:nth-child(4) { animation-delay: .4s; }
-    .stamp-card:nth-child(5) { animation-delay: .5s; }
-    .stamp-img {
+    .hero-stamp-img {
       width: 100%;
-      height: 100%;
-      object-fit: contain;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 8px 28px rgba(139,94,60,.22);
       display: block;
+      opacity: 0;
+      animation: heroStampIn .55s ease forwards;
+    }
+    .hero-stamp-img:nth-child(1) { animation-delay: .1s; }
+    .hero-stamp-img:nth-child(2) { animation-delay: .28s; }
+    .hero-stamp-img:nth-child(3) { animation-delay: .46s; }
+    @keyframes heroStampIn {
+      from { opacity: 0; transform: translateY(16px) scale(.96); }
+      to   { opacity: 1; transform: translateY(0)   scale(1);    }
     }
 
     .hero-btns { display: flex; flex-direction: column; gap: 12px; }
@@ -385,28 +326,84 @@
     /* SAMPLES                                     */
     /* ─────────────────────────────────────────── */
     .samples { background: var(--sub2); }
-    .samples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .sample-card {
-      background: var(--white);
+
+    /* ① 元の愛犬写真 */
+    .samples-original { text-align: center; margin-bottom: 20px; }
+    .original-badge {
+      display: inline-block;
+      background: var(--brown);
+      color: var(--white);
+      font-size: .75rem;
+      font-weight: 800;
+      padding: 5px 16px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+    }
+    .samples-original-img {
+      width: 100%;
+      max-width: 280px;
       border-radius: 20px;
-      padding: 0;
-      overflow: hidden;
-      box-shadow: 0 4px 16px rgba(139,94,60,.08);
+      box-shadow: 0 8px 28px rgba(139,94,60,.18);
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* ② 矢印・変換テキスト */
+    .samples-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin: 24px 0;
+    }
+    .samples-arrow-chevron {
+      font-size: 2rem;
+      color: var(--main);
+      line-height: 1;
+      animation: bounceDown .9s ease-in-out infinite;
+    }
+    @keyframes bounceDown {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(6px); }
+    }
+    .samples-arrow-text {
+      display: inline-block;
+      background: var(--main);
+      color: var(--white);
+      font-weight: 900;
+      font-size: .95rem;
+      padding: 10px 28px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 12px rgba(246,169,109,.4);
+    }
+
+    /* ③ 3種類のスタンプ例（縦並び・大きく） */
+    .samples-stamps {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin-bottom: 16px;
+    }
+    .stamp-example { text-align: center; }
+    .stamp-example-img {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 6px 24px rgba(139,94,60,.15);
+      display: block;
+      margin: 0 auto 12px;
       transition: transform .2s;
     }
-    .sample-card:hover { transform: translateY(-4px); }
-    .sample-img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    .sample-label {
+    .stamp-example-img:hover { transform: translateY(-4px); }
+    .stamp-example-label {
       display: inline-block;
-      background: var(--sub1);
-      border-radius: 8px;
-      padding: 4px 10px;
+      background: var(--white);
+      border: 2px solid var(--sub2);
+      border-radius: 9999px;
+      padding: 5px 20px;
+      font-size: .9rem;
       font-weight: 800;
-      font-size: .84rem;
       color: var(--brown);
     }
     .samples-caption { text-align: center; color: var(--textmid); font-size: .8rem; margin-top: 14px; }
@@ -568,36 +565,12 @@
       </p>
     </div>
 
-    <!-- ── Phone mockup ── -->
-    <div class="hero-visual">
-      <div class="phone-wrap">
-        <!-- floating paw decorations -->
-        <svg class="paw-deco" style="top:8px;right:-32px;width:40px;" viewBox="0 0 100 100" fill="#F6A96D" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="50" cy="70" rx="20" ry="15"/><circle cx="25" cy="48" r="10"/><circle cx="75" cy="48" r="10"/><circle cx="37" cy="32" r="8"/><circle cx="63" cy="32" r="8"/>
-        </svg>
-        <svg class="paw-deco" style="bottom:24px;left:-28px;width:28px;animation-delay:.9s;" viewBox="0 0 100 100" fill="#F6A96D" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="50" cy="70" rx="20" ry="15"/><circle cx="25" cy="48" r="10"/><circle cx="75" cy="48" r="10"/><circle cx="37" cy="32" r="8"/><circle cx="63" cy="32" r="8"/>
-        </svg>
-        <svg class="paw-deco" style="top:42%;right:-18px;width:22px;animation-delay:.45s;" viewBox="0 0 100 100" fill="#F6A96D" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="50" cy="70" rx="20" ry="15"/><circle cx="25" cy="48" r="10"/><circle cx="75" cy="48" r="10"/><circle cx="37" cy="32" r="8"/><circle cx="63" cy="32" r="8"/>
-        </svg>
-
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-
-            <div class="stamp-grid">
-              <div class="stamp-card"><img src="stamp1.png" class="stamp-img" alt="スタンプデザイン1"></div>
-              <div class="stamp-card"><img src="stamp2.png" class="stamp-img" alt="スタンプデザイン2"></div>
-              <div class="stamp-card"><img src="stamp3.png" class="stamp-img" alt="スタンプデザイン3"></div>
-              <div class="stamp-card"><img src="stamp4.png" class="stamp-img" alt="スタンプデザイン4"></div>
-              <div class="stamp-card"><img src="stamp5.png" class="stamp-img" alt="スタンプデザイン5"></div>
-            </div>
-
-          </div><!-- /phone-screen -->
-        </div><!-- /phone-frame -->
-      </div><!-- /phone-wrap -->
-    </div><!-- /hero-visual -->
+    <!-- ── スタンプ3枚横並び ── -->
+    <div class="hero-stamps">
+      <img src="phone-stamp1.png" class="hero-stamp-img" alt="スタンプ例1">
+      <img src="phone-stamp2.png" class="hero-stamp-img" alt="スタンプ例2">
+      <img src="phone-stamp3.png" class="hero-stamp-img" alt="スタンプ例3">
+    </div>
 
     <!-- CTA -->
     <div class="hero-btns">
@@ -775,29 +748,35 @@
 <section class="samples fade-in">
   <div class="container">
     <h2 class="sec-title">こんなスタンプ風デザインを<br>プレゼント！</h2>
-    <div class="samples-grid">
 
-      <!-- Sample 1 -->
-      <div class="sample-card">
-        <img src="sample1.png" class="sample-img" alt="サンプルデザイン1">
-      </div>
-
-      <!-- Sample 2 -->
-      <div class="sample-card">
-        <img src="sample2.png" class="sample-img" alt="サンプルデザイン2">
-      </div>
-
-      <!-- Sample 3 -->
-      <div class="sample-card">
-        <img src="sample3.png" class="sample-img" alt="サンプルデザイン3">
-      </div>
-
-      <!-- Sample 4 -->
-      <div class="sample-card">
-        <img src="sample4.png" class="sample-img" alt="サンプルデザイン4">
-      </div>
-
+    <!-- ① 元の愛犬写真 -->
+    <div class="samples-original">
+      <span class="original-badge">📷 元の愛犬写真</span>
+      <img src="original.jpg" class="samples-original-img" alt="元の愛犬写真">
     </div>
+
+    <!-- ② 矢印・変換テキスト -->
+    <div class="samples-arrow">
+      <span class="samples-arrow-chevron">↓</span>
+      <span class="samples-arrow-text">✨ こんなスタンプにできます！</span>
+    </div>
+
+    <!-- ③ 3種類のスタンプ例 -->
+    <div class="samples-stamps">
+      <div class="stamp-example">
+        <img src="sample-realistic.png" class="stamp-example-img" alt="実写風スタンプ">
+        <span class="stamp-example-label">実写風</span>
+      </div>
+      <div class="stamp-example">
+        <img src="sample-dajare.png" class="stamp-example-img" alt="ダジャレ系スタンプ">
+        <span class="stamp-example-label">ダジャレ系</span>
+      </div>
+      <div class="stamp-example">
+        <img src="sample-gekiga.png" class="stamp-example-img" alt="劇画調スタンプ">
+        <span class="stamp-example-label">劇画調</span>
+      </div>
+    </div>
+
     <p class="samples-caption">※デザインはサンプルです。実際は愛犬のお写真をもとに作成します。</p>
   </div>
 </section>
